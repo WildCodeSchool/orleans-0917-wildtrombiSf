@@ -5,7 +5,8 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Person;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Person controller.
@@ -42,18 +43,20 @@ class PersonController extends Controller
         $person = new Person();
         $form = $this->createForm('AppBundle\Form\PersonType', $person);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($person);
-            $em->flush();
+            if ($person->getUpdatedAt()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($person);
+                $em->flush();
 
-            return $this->redirectToRoute('person_show', array('id' => $person->getId()));
+                return $this->redirectToRoute('person_show', array('id' => $person->getId()));
+            }
+
         }
 
         return $this->render('person/new.html.twig', array(
             'person' => $person,
-            'form' => $form->createView(),
+            'form'   => $form->createView(),
         ));
     }
 
@@ -68,9 +71,24 @@ class PersonController extends Controller
         $deleteForm = $this->createDeleteForm($person);
 
         return $this->render('person/show.html.twig', array(
-            'person' => $person,
+            'person'      => $person,
             'delete_form' => $deleteForm->createView(),
         ));
+    }
+
+    /**
+     * Creates a form to delete a person entity.
+     *
+     * @param Person $person The person entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm(Person $person)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('person_delete', array('id' => $person->getId())))
+            ->setMethod('DELETE')
+            ->getForm();
     }
 
     /**
@@ -92,8 +110,8 @@ class PersonController extends Controller
         }
 
         return $this->render('person/edit.html.twig', array(
-            'person' => $person,
-            'edit_form' => $editForm->createView(),
+            'person'      => $person,
+            'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -116,21 +134,5 @@ class PersonController extends Controller
         }
 
         return $this->redirectToRoute('person_index');
-    }
-
-    /**
-     * Creates a form to delete a person entity.
-     *
-     * @param Person $person The person entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(Person $person)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('person_delete', array('id' => $person->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
     }
 }

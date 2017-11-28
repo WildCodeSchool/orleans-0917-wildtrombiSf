@@ -5,6 +5,7 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class PersonType extends AbstractType
 {
@@ -13,7 +14,12 @@ class PersonType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('firstname')->add('lastname');
+        $builder
+            ->add('firstname')
+            ->add('lastname')
+            ->add('imageFile', VichImageType::class, [ 'required'=>false])
+
+        ;
     }
     
     /**
