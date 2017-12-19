@@ -3,13 +3,23 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <link rel="stylesheet" href="{{ asset('build/vendor.css') }}">
         <link rel="stylesheet" href="{{ asset('build/home.css') }}">
+        {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+            <header>
+                {% block header %}{% endblock %}
+            </header>
+            <main>
+            {% block content %}{% endblock %}
+            </main>
+            <footer>
+                {% block footer %}{% endblock %}
+            </footer>
+        {% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>

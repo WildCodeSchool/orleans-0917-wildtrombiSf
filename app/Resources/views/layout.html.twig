@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {% block header %}
+        <div class="navbar">
+            <a class="navbar-brand" href="#">WildTrombi</a>
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="#">Home</a>
+                </li>
+                <li>
+                    <a href="#">Link</a>
+                </li>
+            </ul>
+        </div>
+    {% endblock %}
+
+    <section class="container">
+        {% block content %}{% endblock %}
+    </section>
+
+    {% block footer %}
+        mon footer visiteur
+    {% endblock %}
+{% endblock %}

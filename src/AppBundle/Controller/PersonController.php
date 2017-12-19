@@ -6,12 +6,13 @@ use AppBundle\Entity\Person;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Person controller.
  *
- * @Route("person")
+ * @Route("admin/person")
  */
 class PersonController extends Controller
 {
@@ -36,6 +37,7 @@ class PersonController extends Controller
      * Creates a new person entity.
      *
      * @Route("/new", name="person_new")
+     * @Security("has_role('ROLE_ADMIN')")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
